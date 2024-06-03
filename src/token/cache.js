@@ -134,7 +134,7 @@ export default class TokenCache {
         console.info('getting tokens')
         let tokenKeys = []
         if (this.persistent) {
-            let keys = await storage.getAllKeys()
+            let keys = storage.getAllKeys()
             for (const key of keys) {
                 if (key.startsWith(tokenKeyPrefix)) tokenKeys.push(key)
             }

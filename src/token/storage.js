@@ -28,7 +28,9 @@ const clear = () => {
     MMKVStorage.clearAll()
 }
 
-const storageKeys = MMKVStorage.getAllKeys()
+const getAllKeys = () => {
+    return MMKVStorage.getAllKeys()
+}
 
 const storage = {
     setItem,
@@ -37,7 +39,7 @@ const storage = {
     getJSONItem,
     removeItem,
     clear,
-    storageKeys,
+    getAllKeys,
 }
 
 export { storage }
