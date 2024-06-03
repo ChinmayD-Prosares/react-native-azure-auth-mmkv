@@ -1,8 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { validate } from '../utils/validate'
 import AccessTokenItem from './accessTokenItem'
 import RefreshTokenItem from './refreshTokenItem'
 import BaseTokenItem from './baseTokenItem'
+import { storage } from './storage'
 
 let _instance = null
 
@@ -54,7 +54,7 @@ export default class TokenCache {
         })
         this.cache[key] = accessToken.toString()
         if (this.persistent) {
-            AsyncStorage.setItem(key, accessToken.toString())
+            storage.setItem(key, accessToken.toString())
             //.catch(err => { return err /* log error?*/ })
         }
         return accessToken
@@ -65,7 +65,7 @@ export default class TokenCache {
         const key = refreshToken.tokenKey()
         this.cache[key] = refreshToken.toString()
         if (this.persistent) {
-            AsyncStorage.setItem(key, refreshToken.toString())
+            storage.setItem(key, refreshToken.toString())
             //.catch(err => { return err /* log error?*/ })
         }
         return refreshToken
@@ -74,7 +74,7 @@ export default class TokenCache {
     removeToken(tokenKey) {
         delete this.cache[tokenKey]
         if (this.persistent) {
-            AsyncStorage.removeItem(tokenKey)
+            storage.removeItem(tokenKey)
             //.catch(err => { return err /* log error?*/ })
         }
     }
@@ -93,11 +93,11 @@ export default class TokenCache {
         }
     
         if (this.persistent) {
-            let keys = await AsyncStorage.getAllKeys()
+            let keys = await storage.getAllKeys()
             for (const key of keys) {
                 const scopeFormKey = BaseTokenItem.scopeFromKey(key)
                 if (scopeFormKey && key.startsWith(accessTokenKeyPrefix) && scope.isSubsetOf(scopeFormKey)) {
-                    const token = await AsyncStorage.getItem(key)
+                    const token = await storage.getItem(key)
                     this.cache[key] = token
                     return AccessTokenItem.fromJson(token)
                 }
@@ -114,7 +114,7 @@ export default class TokenCache {
             refreshToken = RefreshTokenItem.fromJson(this.cache[key])
         }
         if (this.persistent) {
-            const token = await AsyncStorage.getItem(key)
+            const token = await storage.getItem(key)
             refreshToken = RefreshTokenItem.fromJson(token)
         }
         if ((this.cache[key] || this.persistent) && !refreshToken) {
@@ -134,7 +134,7 @@ export default class TokenCache {
         console.info('getting tokens')
         let tokenKeys = []
         if (this.persistent) {
-            let keys = await AsyncStorage.getAllKeys()
+            let keys = await storage.getAllKeys()
             for (const key of keys) {
                 if (key.startsWith(tokenKeyPrefix)) tokenKeys.push(key)
             }

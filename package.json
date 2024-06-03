@@ -48,9 +48,9 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.5",
-    "@react-native-async-storage/async-storage": "^1.13.0",
     "js-base64": "^3.7.5",
     "jwt-decode": "^4.0.0",
+    "react-native-mmkv": "^2.12.2",
     "url": "^0.11.0"
   },
   "peerDependencies": {
